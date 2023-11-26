@@ -6,6 +6,7 @@ const UserRouter = (db: NoSQLWrapper) => {
     const router = express.Router();
     router.get('/user', async(request, response) => {
         const resultDbList = await db.FindAllUsers();
+        console.log('aqui llega la peticion');
         response.status(HttpStateCodes.OK).json({response: resultDbList});
     });
     router.post('/user', async(request, response) => {
