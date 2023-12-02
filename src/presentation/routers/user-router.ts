@@ -1,6 +1,8 @@
 import express from 'express';
 import HttpStateCodes from '../../utils/http-state-codes';
 import NoSQLWrapper from '../../data/interfaces/data-sources/no-sql-wrapper';
+import User from '../../domain/models/User';
+
 const UserRouter = (db: NoSQLWrapper) => {
     // routing
     const router = express.Router();
@@ -12,6 +14,31 @@ const UserRouter = (db: NoSQLWrapper) => {
         const user = request.body;
         const resultDb = await db.CreateUser(user);
         response.status(HttpStateCodes.OK).json({response: resultDb});
+    })
+    router.delete('/user/:id', async(request, response) => {
+        const {id}=request.params;
+        try {
+            const result = await db.DeleteUsers(id);
+            result
+            ? response.status(HttpStateCodes.OK).send('Successfully deleted user with id ${id}')
+            : response.status(HttpStateCodes.NOT_FOUND).send('User with id: ${id} not deleted');
+        }catch (error: any) {
+            console.error(error.message);
+            response.status(HttpStateCodes.BAD_REQUEST).send(error.message);
+        }
+    })
+    router.put('/user/:id', async(request, response) => {
+        const id = request?.params?.id;
+        try {
+            const updateDates: User = request.body as User;
+            const result = await db.UpdateUsers(id,updateDates);
+            result
+            ? response.status(HttpStateCodes.OK).send('Successfully updated user with id ${id}')
+            : response.status(HttpStateCodes.NOT_FOUND).send('User with id: ${id} not updated');
+        }catch (error: any) {
+            console.error(error.message);
+            response.status(400).send(error.message);
+        }
     })
     return router;
 }
