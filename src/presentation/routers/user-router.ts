@@ -20,11 +20,11 @@ const UserRouter = (db: NoSQLWrapper) => {
         try {
             const result = await db.DeleteUsers(id);
             result
-            ? response.status(HttpStateCodes.OK).send('Successfully deleted user with id ${id}')
-            : response.status(HttpStateCodes.NOT_FOUND).send('User with id: ${id} not deleted');
+            ? response.status(HttpStateCodes.OK).json({ message: 'Successfully deleted user with id ${id}'})
+            : response.status(HttpStateCodes.NOT_FOUND).json({ error: 'User with id: ${id} not deleted'});
         }catch (error: any) {
             console.error(error.message);
-            response.status(HttpStateCodes.BAD_REQUEST).send(error.message);
+            response.status(HttpStateCodes.BAD_REQUEST).json({ error: error.message });
         }
     })
     router.put('/user/:id', async(request, response) => {
@@ -33,11 +33,11 @@ const UserRouter = (db: NoSQLWrapper) => {
             const updateDates: User = request.body as User;
             const result = await db.UpdateUsers(id,updateDates);
             result
-            ? response.status(HttpStateCodes.OK).send('Successfully updated user with id ${id}')
-            : response.status(HttpStateCodes.NOT_FOUND).send('User with id: ${id} not updated');
+            ? response.status(HttpStateCodes.OK).json({ message:'Successfully updated user with id ${id}'})
+            : response.status(HttpStateCodes.NOT_FOUND).json({ error:'User with id: ${id} not updated'});
         }catch (error: any) {
             console.error(error.message);
-            response.status(400).send(error.message);
+            response.status(400).json({error: error.message});
         }
     })
     return router;
