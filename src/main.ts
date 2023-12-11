@@ -38,36 +38,36 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
         return result;
     }
 
-    const CreateArticulo = async (articulo: any): Promise<any> => {
+    const CreateArticle = async (article: any): Promise<any> => {
         const year = await db.collection('years').insertOne({
-            year: articulo.year,
-            disponible: articulo.disponible
+            year: article.year,
+            disponible: article.disponible
         });
         const volumen = await db.collection('volumenes').insertOne({
-            volumen: articulo.volumen
+            volumen: article.volumen
         });
         // para que no se inserte dos veces en la misma coleccion
-        const yy = {
+        const dataYearToSave = {
             id: year.insertedId,
-            year: articulo.year,
-            disponible: articulo.disponible
+            year: article.year,
+            disponible: article.disponible
         };
-        const vv  = {
+        const dataVolumeToSave  = {
             id: volumen.insertedId,
-            volumen: articulo.volumen
+            volumen: article.volumen
         };
-        delete articulo.year;
-        delete articulo.disponible;
-        delete articulo.volumen;
-        articulo.year = yy;
-        articulo.volumen = vv;
-        const result = await db.collection('aticulos').insertOne(articulo);
+        delete article.year;
+        delete article.disponible;
+        delete article.volumen;
+        article.year = dataYearToSave;
+        article.volumen = dataVolumeToSave;
+        const result = await db.collection('aticulos').insertOne(article);
         return {
             ...result
         };
     }
 
-    const FindAllArticulo = async (): Promise<any[]> => {
+    const FindAllArticle = async (): Promise<any[]> => {
         const result = await db.collection('aticulos').find().toArray();
         return result;
     }
@@ -77,12 +77,12 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
         return result;
     }
 
-    const FindAllYearsDisponibles = async (): Promise<any[]> => {
+    const FindAllYearsAvailable = async (): Promise<any[]> => {
         const result = await db.collection('years').find({disponible: "true"}).toArray();
         return result;
     }
 
-    const FindAllVolumenesPorAnio = async (year:any): Promise<any[]> => {
+    const FindAllVolumesPerYear = async (year:any): Promise<any[]> => {
         const articulos = await db.collection('aticulos').find({'year.year':year}).toArray();
         const volumenes = [];
         for (let y = 0; y < articulos.length; y++) {
@@ -100,11 +100,11 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
     return {
         CreateUser,
         FindAllUsers,
-        CreateArticulo,
-        FindAllArticulo,
+        CreateArticle,
+        FindAllArticle,
         FindAllYears, 
-        FindAllYearsDisponibles,
-        FindAllVolumenesPorAnio,
+        FindAllYearsAvailable,
+        FindAllVolumesPerYear,
         FindAllVolumenes,
         FindOneUser
     }

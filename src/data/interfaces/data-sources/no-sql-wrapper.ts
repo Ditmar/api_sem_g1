@@ -4,15 +4,15 @@ interface NoSQLWrapper {
     FindOneUser: (email:string, password: string) => Promise<any>;
 
     //articulo
-    CreateArticulo: (user: any) => Promise<any>;
-    FindAllArticulo: () => Promise<any[]>;
+    CreateArticle: (user: any) => Promise<any>;
+    FindAllArticle: () => Promise<any[]>;
 
     //years
     FindAllYears: () => Promise<any[]>;
-    FindAllYearsDisponibles: () => Promise<any[]>;
+    FindAllYearsAvailable: () => Promise<any[]>;
 
     //volumen
-    FindAllVolumenesPorAnio: (year: any) => Promise<any[]>;
+    FindAllVolumesPerYear: (year: any) => Promise<any[]>;
     FindAllVolumenes: (page: any, limit: any) => Promise<any>;
 }
 export default NoSQLWrapper;
