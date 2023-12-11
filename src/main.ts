@@ -13,6 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
 const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
     //mongodb://admin:password@localhost:27017/db
     const stringConnection = `mongodb://${process.env.API_MONGO_USERNAME}:${process.env.API_MONGO_PASSWORD}@localhost:27017`
+    
     const uri = stringConnection;
     const client = new MongoClient(uri);
 
