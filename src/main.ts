@@ -1,5 +1,6 @@
 import server from './server'
 import UserRouter from './presentation/routers/user-router';
+import mockData from './__mock__/mock-data';
 import ArticuloRouter from './presentation/routers/articulo-router';
 import VolumenRouter from './presentation/routers/volumenes-route';
 import YearRouter from './presentation/routers/year-router';
@@ -118,8 +119,6 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
 // const getSqlServerClient = () => {
 
 // }
-
-
 (async() => {
     const db = await getMongoDBClient();
     server.use('/api', UserRouter(db));

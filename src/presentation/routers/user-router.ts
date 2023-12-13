@@ -14,10 +14,11 @@ const UserRouter = (db: NoSQLWrapper) => {
         response.status(HttpStateCodes.OK).json({response: resultDbList});
     });
     router.post('/user', async(request, response) => {
-        const user: User = request.body;
+        const user: User = request.body
         const resultDb = await db.CreateUser(user);
         response.status(HttpStateCodes.OK).json({response: resultDb});
     })
+
     router.post('/login', async(request, response) => {
         const { email, password } = request.body;
 
